@@ -1,129 +1,332 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>YatraMind AI</title>
 
-    <link rel="stylesheet" href="/static/style.css">
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
+
 </head>
+
 
 <body>
 
+
+    <!-- =====================================================
+         BACKGROUND
+    ====================================================== -->
+
     <div class="page-bg">
+
         <div class="gradient-circle circle-1"></div>
+
         <div class="gradient-circle circle-2"></div>
+
         <div class="gradient-circle circle-3"></div>
+
     </div>
+
+
+    <!-- =====================================================
+         MAIN APPLICATION
+    ====================================================== -->
 
     <main class="app-container">
 
+
+        <!-- =================================================
+             HERO SECTION
+        ================================================== -->
+
         <section class="hero-section">
+
             <div class="badge">
                 ✈️ YatraMind AI — Multi-Agent Travel Intelligence Platform
             </div>
+
 
             <h1>
                 Plan Your Perfect Trip with YatraMind AI
             </h1>
 
+
             <p>
-                Search flights, discover hotels, and generate a complete travel itinerary using a multi-agent LangGraph system.
+                Search flights, discover hotels, and generate a complete
+                travel itinerary using a multi-agent LangGraph system.
             </p>
+
         </section>
+
+
+
+        <!-- =================================================
+             TRAVEL PLANNER
+        ================================================== -->
 
         <section class="planner-card">
 
+
+            <!-- CARD HEADER -->
+
             <div class="card-header">
+
                 <div>
-                    <h2>Where do you want to go?</h2>
+
+                    <h2>
+                        Where do you want to go?
+                    </h2>
+
                     <p>
-                        Example: Plan a complete 7 days Ladakh trip from Bengaluru under 2 lakhs.
+                        Example: Plan a complete 7 days Ladakh trip
+                        from Bengaluru under 2 lakhs.
                     </p>
+
                 </div>
+
 
                 <div class="status-pill">
+
                     <span class="status-dot"></span>
+
                     Online
+
                 </div>
+
             </div>
+
+
+
+            <!-- =================================================
+                 INPUT AREA
+            ================================================== -->
 
             <div class="input-area">
+
+
                 <textarea
                     id="userInput"
-                    placeholder="Plan a complete 7 days manali trip including flights, hotels and sightseeing under 2 lakhs..."
+                    placeholder="Plan a complete 7 days Manali trip from Hyderabad including flights, hotels and sightseeing under ₹2 lakhs..."
                 ></textarea>
 
-                <button id="sendBtn" onclick="sendMessage()">
-                    <span id="btnText">Generate Plan</span>
-                    <span id="btnLoader" class="loader hidden"></span>
+
+                <button
+                    id="sendBtn"
+                    onclick="sendMessage()"
+                >
+
+                    <span id="btnText">
+                        Generate Plan →
+                    </span>
+
+
+                    <span
+                        id="btnLoader"
+                        class="loader hidden"
+                    ></span>
+
                 </button>
+
             </div>
+
+
+
+            <!-- =================================================
+                 QUICK PROMPTS
+            ================================================== -->
 
             <div class="quick-prompts">
-                <button onclick="setPrompt('Plan a complete 7 days Ladakh trip from Hyd including flights, hotels and sightseeing under 2 lakhs.')">
-                    Ladakh Trip
+
+
+                <button
+                    onclick="setPrompt('Plan a complete 7 days Ladakh trip from Hyderabad including flights, hotels and sightseeing under ₹2 lakhs.')"
+                >
+                    🏔️ Ladakh Trip
                 </button>
 
-                <button onclick="setPrompt('Plan a 5 days Dubai trip from Hyd with flights, hotels and sightseeing.')">
-                    Dubai Trip
+
+                <button
+                    onclick="setPrompt('Plan a 5 days Dubai trip from Hyderabad with flights, hotels and sightseeing.')"
+                >
+                    🌆 Dubai Trip
                 </button>
 
-                <button onclick="setPrompt('Plan a 7 days Kerala trip from Hyd with budget hotels and sightseeing.')">
-                    Kerala Trip
+
+                <button
+                    onclick="setPrompt('Plan a 7 days Kerala trip from Hyderabad with budget hotels and sightseeing.')"
+                >
+                    🌴 Kerala Trip
                 </button>
 
-                <button onclick="setPrompt('Give me all country flight info.')">
-                    Global Flights
+
+                <button
+                    onclick="setPrompt('Give me all country flight info.')"
+                >
+                    🌍 Global Flights
                 </button>
+
+
             </div>
+
 
         </section>
 
-        <section id="resultSection" class="result-section hidden">
+
+
+        <!-- =================================================
+             RESULT SECTION
+        ================================================== -->
+
+        <section
+            id="resultSection"
+            class="result-section hidden"
+        >
+
+
+            <!-- RESULT HEADER -->
 
             <div class="result-header">
+
+
                 <div>
-                    <h2>Your AI Travel Plan</h2>
-                    <p id="threadInfo">Thread ID: -</p>
+
+                    <h2>
+                        Your AI Travel Plan
+                    </h2>
+
+
+                    <p id="threadInfo">
+                        Thread ID: -
+                    </p>
+
                 </div>
+
+
+
+                <!-- RESULT ACTIONS -->
 
                 <div class="result-actions">
-                    <button class="copy-btn" onclick="copyResult()">
-                        Copy
+
+
+                    <button
+                        class="copy-btn"
+                        onclick="copyResult()"
+                    >
+                        ⧉ Copy
                     </button>
 
-                    <button class="download-btn" onclick="downloadPDF()">
-                        Download PDF
+
+                    <button
+                        class="download-btn"
+                        onclick="downloadPDF()"
+                    >
+                        ↓ Download PDF
                     </button>
+
+
                 </div>
+
+
             </div>
 
-            <div id="pdfContent" class="pdf-content">
-                <h1 class="pdf-title">AI Travel Plan</h1>
-                <div id="resultBox" class="result-box"></div>
+
+
+            <!-- =================================================
+                 AI RESPONSE CONTENT
+            ================================================== -->
+
+            <div
+                id="pdfContent"
+                class="pdf-content"
+            >
+
+
+                <!-- Used when generating the PDF -->
+
+                <h1 class="pdf-title">
+                    YatraMind AI — Travel Plan
+                </h1>
+
+
+                <div
+                    id="resultBox"
+                    class="result-box"
+                ></div>
+
+
             </div>
+
 
         </section>
 
-        <section id="errorBox" class="error-box hidden"></section>
+
+
+        <!-- =================================================
+             ERROR MESSAGE
+        ================================================== -->
+
+        <section
+            id="errorBox"
+            class="error-box hidden"
+        ></section>
+
 
     </main>
 
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
     <footer>
-        Built with FastAPI, LangGraph, Groq, PostgreSQL, Tavily and AviationStack
+
+        Built with
+        FastAPI · LangGraph · Groq · PostgreSQL · Tavily · AviationStack
+
     </footer>
 
-    <!-- Markdown Renderer -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-    <!-- PDF Download Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-    <!-- Your Custom JS -->
-    <script src="/static/script.js"></script>
+    <!-- =====================================================
+         MARKDOWN RENDERER
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
+    ></script>
+
+
+
+    <!-- =====================================================
+         PDF GENERATION
+    ====================================================== -->
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+    ></script>
+
+
+
+    <!-- =====================================================
+         APPLICATION JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        src="/static/script.js"
+    ></script>
+
 
 </body>
+
 </html>

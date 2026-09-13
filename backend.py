@@ -2,6 +2,8 @@ import os
 import certifi
 from dotenv import load_dotenv
 
+from datetime import date
+
 load_dotenv()
 
 os.environ["SSL_CERT_FILE"] = certifi.where()
@@ -69,6 +71,7 @@ class TravelState(TypedDict):
     itinerary: str
     llm_calls: int
 
+CURRENT_DATE = date.today().strftime("%d %B %Y")
 
 # =========================
 # Flight Agent
@@ -112,8 +115,12 @@ def hotel_agent(state: TravelState):
 # =========================
 
 def itinerary_agent(state: TravelState):
+
     prompt = f"""
 Create a complete travel itinerary.
+
+Current Date:
+{CURRENT_DATE}
 
 User Query:
 {state['user_query']}
@@ -124,11 +131,19 @@ Flight Results:
 Hotel Results:
 {state['hotel_results']}
 
-Make the itinerary practical, budget-aware, and easy to follow.
+Requirements:
+- Use the current date as the reference date.
+- Never invent outdated dates such as 2025 unless the user explicitly requested a historical trip.
+- If the user did not provide travel dates, do not randomly choose an old date.
+- Suggest appropriate upcoming travel dates based on the current date.
+- Make the itinerary practical, budget-aware, and easy to follow.
+- Clearly distinguish between user-provided dates and dates suggested by you.
 """
 
     response = llm.invoke([
-        SystemMessage(content="You are an expert travel planner."),
+        SystemMessage(
+            content="You are an expert travel planner."
+        ),
         HumanMessage(content=prompt)
     ])
 
@@ -138,15 +153,17 @@ Make the itinerary practical, budget-aware, and easy to follow.
         "llm_calls": state.get("llm_calls", 0) + 1
     }
 
-
-
 # =========================
 # Final Response Agent
 # =========================
 
 def final_agent(state: TravelState):
+
     final_prompt = f"""
 Generate the final travel response for the user.
+
+Current Date:
+{CURRENT_DATE}
 
 User Request:
 {state['user_query']}
@@ -170,13 +187,19 @@ Format the final answer beautifully using these sections:
 6. Final Recommendations
 
 Important:
-- Be clear and practical.
-- Mention that live flight API may not provide ticket prices if pricing is unavailable.
+- Use {CURRENT_DATE} as the current date.
+- Do not use outdated dates such as 2025 unless the user explicitly asks for historical travel information.
+- If the user did not provide travel dates, clearly label any dates as suggested dates.
+- Do not present invented dates as confirmed bookings.
+- Do not claim that flight prices are live unless pricing data was actually provided by the flight API.
+- Clearly distinguish live flight information from AI-generated recommendations.
 - Keep the response useful for real travel planning.
 """
 
     response = llm.invoke([
-        SystemMessage(content="You are a professional AI travel booking assistant."),
+        SystemMessage(
+            content="You are a professional AI travel booking assistant."
+        ),
         HumanMessage(content=final_prompt)
     ])
 
